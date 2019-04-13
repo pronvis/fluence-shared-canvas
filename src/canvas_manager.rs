@@ -42,14 +42,15 @@ impl Cell {
 
 // ================== CanvasManager ==================
 
+#[derive(Debug)]
 pub struct CanvasManager {
     canvas: HashMap<Cell, String>
 }
 
 impl CanvasManager {
     pub fn new() -> Self {
-        let x_size = 1000;
-        let y_size = 1000;
+        let x_size = 10;
+        let y_size = 10;
         let white_colour = String::from("#ffafff");
 
         let mut canvas_map: HashMap<Cell, String> = HashMap::new();
@@ -73,11 +74,15 @@ impl CanvasManager {
 
         let json_response: AppResult<Value> = serde_json::to_value(result).map_err(Into::into);
 
-        match &json_response {
-            Ok(res) => info!("JSON ok : {}", res.to_string()),
-            Err(err) => info!("JSON error: {}", err.to_string())
-        }
-
         json_response
+    }
+
+    pub fn set(&mut self, x_coord: u32, y_coord: u32, colour: String) -> AppResult<Value> {
+        self.canvas.insert(Cell::new(x_coord, y_coord), colour);
+
+        let result = Response::PaintResult {
+            ok: true
+        };
+        serde_json::to_value(result).map_err(Into::into)
     }
 }

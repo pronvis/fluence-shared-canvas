@@ -15,7 +15,7 @@ pub enum Request {
 #[serde(untagged)]
 pub enum Response {
     Matrix { state: Vec<CellStateResponse> },
-    PaintResult { error: Option<String> },
+    PaintResult { ok: bool },
     Error { message: String },
 }
 

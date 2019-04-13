@@ -37,6 +37,6 @@ fn do_request(req: String) -> AppResult<Value> {
 
     match request {
         Request::Get => CANVAS_MANAGER.with(|cm| cm.borrow_mut().to_response()),
-        Request::Set{x_coord, y_coord, colour} => serde_json::from_str("lala").map_err(Into::into)
+        Request::Set{x_coord, y_coord, colour} => CANVAS_MANAGER.with(|cm| cm.borrow_mut().set(x_coord, y_coord, colour))
     }
 }
